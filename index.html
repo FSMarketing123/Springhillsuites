@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpringHill Suites Jacksonville, FL — Offered by Hodges Ward Elliott</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+  :root{
+    --ink:#0d1620;        --ink-rgb:13,22,32;
+    --navy:#152234;       --navy-rgb:21,34,52;
+    --navy-lt:#1d3048;
+    --blue:#21438A;       --blue-mid:#1a3470;  --blue-lt:#2d57b0;
+    --red:#BE2D37;        --red-lt:#d63d48;
+    --dark-gray:#56565B;
+    --cream:#ffffff;      --off-white:#eaeef4;  --muted:#8ba0b8;
+    --divider:rgba(33,67,138,.2);
+    --font-cormorant:"Cormorant Garamond",Georgia,serif;
+    --font-jost:"Jost",system-ui,sans-serif;
+    --pad:clamp(24px,7vw,100px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ink);color:var(--cream);
+       font-family:var(--font-jost);font-weight:300;line-height:1.6;
+       -webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+
+  .section{padding:clamp(64px,10vh,120px) var(--pad)}
+  .wrap{max-width:1280px;margin:0 auto}
+  .bleed{margin-left:calc(-1*var(--pad));margin-right:calc(-1*var(--pad))}
+
+  h1,h2,h3{font-family:var(--font-cormorant);font-weight:300;margin:0}
+  .h2{font-size:clamp(36px,4.5vw,58px);line-height:1.05;color:var(--cream)}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .lead{font-size:15.5px;color:var(--muted);line-height:1.8}
+  .em{font-style:italic;color:#fff}
+
+  .btn{display:inline-block;padding:13px 26px;font-family:var(--font-jost);font-size:11px;
+       font-weight:600;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;
+       border-radius:1px;transition:transform .2s,opacity .2s}
+  .btn:hover{transform:translateY(-1px);opacity:.9}
+  .btn-cta{background:var(--red);color:#fff}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+
+  .nav{position:fixed;inset:0 0 auto 0;z-index:100;height:68px;display:flex;align-items:center;
+       justify-content:space-between;padding:0 clamp(16px,4vw,72px);
+       background:rgba(var(--ink-rgb),.96);backdrop-filter:blur(14px);
+       border-bottom:1px solid var(--divider)}
+  .nav-logo{font-family:var(--font-cormorant);font-size:15px;letter-spacing:.12em;color:#fff;text-decoration:none;white-space:nowrap}
+  .nav-links{display:flex;align-items:center;gap:clamp(14px,2vw,30px);flex-wrap:nowrap}
+  .nav a.link{font-size:clamp(9px,1vw,11px);letter-spacing:.15em;text-transform:uppercase;
+         color:var(--muted);text-decoration:none;white-space:nowrap;transition:color .2s}
+  .nav a.link:hover{color:#fff}
+  .nav .cta{padding:7px 16px;background:var(--red);color:#fff;font-size:clamp(9px,1vw,10.5px);
+       font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:1px;flex-shrink:0}
+
+  @keyframes scrollPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.4;transform:scaleY(.6)}}
+
+  /* Hero */
+  .hero{position:relative;height:100svh;min-height:680px;overflow:hidden}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
+  .hero-gradient{position:absolute;inset:0;background:linear-gradient(to top, var(--ink) 0%, rgba(var(--ink-rgb),.55) 28%, transparent 52%)}
+  .hero-logo-box{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);
+       background:rgba(var(--navy-rgb),.82);backdrop-filter:blur(10px);
+       border:1px solid rgba(255,255,255,.12);padding:clamp(28px,4vh,52px) clamp(36px,5vw,72px);
+       text-align:center;min-width:clamp(280px,38vw,540px)}
+  .hero-logo-box .brandname{font-family:var(--font-cormorant);font-size:clamp(26px,3.4vw,42px);font-weight:400;color:#fff;letter-spacing:.02em}
+  .hero-logo-box .brandsub{margin-top:8px;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
+  .hero-meta{position:absolute;bottom:0;left:0;right:0;padding-bottom:clamp(36px,5vh,64px);
+       padding-left:var(--pad);padding-right:var(--pad);display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .hero-meta .addr{font-size:13px;color:var(--muted);letter-spacing:.08em}
+  .hero-meta .divider-v{width:1px;height:16px;background:rgba(255,255,255,.2)}
+  .hero-meta .offered{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .scroll-cue{position:absolute;bottom:clamp(36px,5vh,64px);right:var(--pad);display:flex;
+       flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:10px;
+       letter-spacing:.3em;text-transform:uppercase}
+  .scroll-line{width:1px;height:48px;background:linear-gradient(to bottom, var(--red), transparent);animation:scrollPulse 2s ease-in-out infinite}
+
+  /* Overview */
+  .overview{background:var(--navy)}
+  .two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:start}
+  .stats-card{background:var(--navy-lt);padding:8px;display:grid;grid-template-columns:1fr 1fr;}
+  .stat-row{padding:18px 20px;border-bottom:1px solid var(--divider)}
+  .stat-row:nth-child(odd){border-right:1px solid var(--divider)}
+  .stat-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .stat-value{font-family:var(--font-cormorant);font-size:24px;color:#fff}
+  .brand-tag{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:600;
+       letter-spacing:.18em;text-transform:uppercase;padding:6px 14px;margin-bottom:22px}
+
+  /* Gallery */
+  .gallery-section{background:var(--navy);padding-bottom:0}
+  .gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:320px;gap:3px;margin-top:40px}
+  .g-item{position:relative;overflow:hidden}
+  .g-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .g-item:hover img{transform:scale(1.04)}
+  .g-item .g-overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.55), transparent 55%);
+       opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:16px}
+  .g-item:hover .g-overlay{opacity:1}
+  .g-overlay span{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#fff}
+
+  /* Highlights */
+  .highlights-section{background:var(--ink)}
+  .highlights-grid{display:grid;gap:3px;margin-top:44px}
+  .h-card{background:var(--blue);padding:44px 40px;transition:background .3s}
+  .h-card:hover{background:var(--blue-mid)}
+  .h-card h3{font-size:24px;font-weight:400;color:#fff;margin-bottom:14px}
+  .h-card p{font-size:15px;line-height:1.78;color:rgba(255,255,255,.65);margin:0}
+
+  /* Location */
+  .location-section{background:var(--navy)}
+  .loc-photos{display:flex;flex-direction:column;gap:4px}
+  .loc-photo{position:relative;height:230px;border-radius:2px;overflow:hidden;
+       box-shadow:0 24px 80px rgba(0,0,0,.45)}
+  .loc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .loc-photo:hover img{transform:scale(1.05)}
+  .loc-photo .cap{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;
+       background:linear-gradient(to top, rgba(0,0,0,.6), transparent);
+       font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:#fff}
+  .callout{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+  .callout .dot{width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:7px;flex-shrink:0}
+  .callout p{margin:0;font-size:15px;color:var(--muted);line-height:1.6}
+
+  /* Demand map */
+  .demand-section{background:var(--ink)}
+  .map-shell{background:#fff;border:1px solid #d8dee8;box-shadow:0 24px 80px rgba(0,0,0,.35);
+       border-radius:2px;display:grid;grid-template-columns:1fr 380px;min-height:520px;margin-top:44px;overflow:hidden}
+  #demand-map{width:100%;height:100%;min-height:520px}
+  .dg-table{overflow-y:auto;max-height:520px}
+  .dg-table table{width:100%;border-collapse:collapse}
+  .dg-table th{background:#f8f4ef;text-align:left;padding:12px 16px;font-size:10px;
+       letter-spacing:.15em;text-transform:uppercase;color:var(--dark-gray);position:sticky;top:0}
+  .dg-table td{padding:12px 16px;font-size:13px;color:#1c2733;border-top:1px solid #eee;cursor:pointer}
+  .dg-table tr:hover td{background:#f5f7fb}
+  .dg-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+       border-radius:50%;background:#0d1620;color:#fff;font-size:11px;margin-right:8px}
+
+  /* Brand */
+  .brand-section{background:var(--blue);position:relative;overflow:hidden}
+  .brand-section::before{content:"";position:absolute;inset:0;
+       background:radial-gradient(circle at 80% 20%, rgba(255,255,255,.08), transparent 60%)}
+  .brand-inner{position:relative}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2px;margin-top:40px}
+  .bstat{background:rgba(255,255,255,.1);padding:28px 20px;text-align:center}
+  .bstat .val{font-family:var(--font-cormorant);font-size:clamp(28px,3vw,44px);color:#fff}
+  .bstat .lbl{font-size:11px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:6px;letter-spacing:.1em}
+  .pillars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px}
+  .pillar{border-left:2px solid rgba(255,255,255,.25);padding-left:24px}
+  .pillar h3{font-size:22px;color:#fff;margin-bottom:10px}
+  .pillar p{font-size:14px;color:rgba(255,255,255,.65);line-height:1.7;margin:0}
+
+  /* CTA */
+  .cta-section{background:var(--ink);text-align:center}
+  .cta-section h2{font-size:clamp(40px,5.5vw,72px)}
+  .cta-section p{max-width:50ch;margin:22px auto 36px;font-size:15.5px;color:var(--muted);line-height:1.8}
+  .cta-btns{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+
+  /* Footer */
+  footer{background:var(--blue)}
+  .footer-inner{display:grid;grid-template-columns:auto 1fr;gap:clamp(48px,8vw,120px);align-items:start}
+  .hwe-wordmark{font-family:var(--font-cormorant);font-size:26px;color:#fff;letter-spacing:.06em;line-height:1.3}
+  .footer-col h4{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);
+       margin:0 0 10px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.2)}
+  .contacts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px 48px;margin-bottom:44px}
+  .contact-name{font-size:14px;font-weight:600;color:#fff}
+  .contact-title,.contact-email{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;display:block}
+  .footer-bottom{margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);
+       font-size:11.5px;color:rgba(255,255,255,.4)}
+
+  .leaflet-popup-tip-container{display:none}
+
+  @media(max-width:900px){
+    .map-shell{grid-template-columns:1fr}
+    #demand-map{min-height:400px}
+    .dg-table{max-height:400px}
+  }
+  @media(max-width:760px){
+    .two-col{grid-template-columns:1fr !important;gap:40px !important}
+    .gallery-grid{grid-template-columns:1fr 1fr}
+    .footer-inner{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <a href="#top" class="nav-logo">SpringHill Suites <span style="color:var(--muted)">Jacksonville</span></a>
+  <nav class="nav-links">
+    <a class="link" href="#overview">Overview</a>
+    <a class="link" href="#gallery">Gallery</a>
+    <a class="link" href="#highlights">Highlights</a>
+    <a class="link" href="#location">Location</a>
+    <a class="link" href="#demand">Demand</a>
+    <a class="link" href="#brand">Brand</a>
+    <a class="cta" href="#confidentiality">Sign CA</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920&auto=format&fit=crop" alt="SpringHill Suites Jacksonville" />
+  <div class="hero-gradient"></div>
+  <div class="hero-logo-box">
+    <div class="brandname">SpringHill Suites</div>
+    <div class="brandsub">Jacksonville, Florida</div>
+  </div>
+  <div class="hero-meta">
+    <span class="addr">4385 Southside Boulevard, Jacksonville, FL 32216</span>
+    <span class="divider-v"></span>
+    <span class="offered">Offered by Hodges Ward Elliott</span>
+  </div>
+  <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section overview" id="overview">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:18px">The Offering</div>
+    <h2 class="h2" style="margin-bottom:44px">A premier extended-stay asset in<br><span class="em">Jacksonville's Deerwood Park corridor</span></h2>
+    <div class="two-col">
+      <div>
+        <p class="lead">Hodges Ward Elliott ("HWE") is pleased to exclusively offer for sale the fee-simple interest in the 102-suite SpringHill Suites Jacksonville (the "Hotel" or "Property"). Jacksonville has remained a favorite year-round destination spot for travelers and business travelers alike, driven by its leisure amenities, cultural attractions, and continued corporate relocations.</p>
+        <p class="lead" style="margin-top:20px">Ideally located in Jacksonville's Deerwood Park / Southside Boulevard corridor just off I-95, the Property is surrounded by leading corporate, healthcare, and retail demand generators. The Hotel offers convenient access to the 1.4-million-square-foot St. Johns Town Center and to Downtown Jacksonville, home to the NFL's Jacksonville Jaguars and EverBank Stadium, as well as the scenic Riverwalk, diverse dining options, and entertainment venues.</p>
+        <p class="lead" style="margin-top:20px">Guests additionally benefit from proximity to Jacksonville's 22 miles of white-sand beaches and more than 80,000 acres of parks and outdoor space, further enhancing the city's appeal as a top leisure market. Backed by <span class="em">sustained population growth, a top-ranked job market, and billions in citywide development</span>, the all-suite, extended-stay Hotel is well positioned to capture both corporate and leisure demand within one of Florida's most resilient lodging submarkets.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:36px">
+          <a href="#" class="btn btn-cta">Sign CA Online</a>
+          <a href="#" class="btn btn-ghost">Download CA (DOCX)</a>
+        </div>
+      </div>
+      <div>
+        <span class="brand-tag">SpringHill Suites / Marriott</span>
+        <div class="stats-card">
+          <div class="stat-row"><div class="stat-label">Guest Suites</div><div class="stat-value">102</div></div>
+          <div class="stat-row"><div class="stat-label">Floors</div><div class="stat-value">5</div></div>
+          <div class="stat-row"><div class="stat-label">Built / Renovated</div><div class="stat-value">2000 / 2021</div></div>
+          <div class="stat-row"><div class="stat-label">Class</div><div class="stat-value">Upscale Ext.-Stay</div></div>
+          <div class="stat-row"><div class="stat-label">Land Area</div><div class="stat-value">±2.6 Acres</div></div>
+          <div class="stat-row"><div class="stat-label">F&amp;B</div><div class="stat-value">Compl. Breakfast</div></div>
+          <div class="stat-row"><div class="stat-label">Parking</div><div class="stat-value">Self-Park $5/Day</div></div>
+          <div class="stat-row"><div class="stat-label">Interest</div><div class="stat-value">Fee Simple</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section gallery-section" id="gallery">
+  <div class="wrap">
+    <h2 class="h2">A landmark on Southside Boulevard</h2>
+  </div>
+  <div class="gallery-grid bleed">
+    <div class="g-item" style="grid-row:1 / 3">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop" alt="Exterior">
+      <div class="g-overlay"><span>Exterior — placeholder</span></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=800&auto=format&fit=crop" alt="Suite">
+      <div class="g-overlay"><span>Guest Suite — placeholder</span></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800&auto=format&fit=crop" alt="Lobby">
+      <div class="g-overlay"><span>Lobby — placeholder</span></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=800&auto=format&fit=crop" alt="Pool">
+      <div class="g-overlay"><span>Outdoor Pool — placeholder</span></div>
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800&auto=format&fit=crop" alt="Fitness Center">
+      <div class="g-overlay"><span>Fitness Center — placeholder</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section class="section highlights-section" id="highlights">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:18px">Investment Highlights</div>
+    <h2 class="h2">Why Jacksonville. Why Now.</h2>
+    <p class="lead" style="max-width:70ch;margin-top:18px">A convergence of location, brand, and market timing defines this offering.</p>
+    <div class="highlights-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="h-card">
+        <h3>Prime Location in Deerwood Park / Southside Corridor</h3>
+        <p>Situated within one of Jacksonville's most established business corridors, centrally positioned between Downtown and the beaches, with direct access to I-95, JTB (Hwy 202), and I-295. Major employers within 1–5 miles include ADP, Merrill Lynch, Blue Cross Blue Shield, Bank of America, and Johnson &amp; Johnson.</p>
+      </div>
+      <div class="h-card">
+        <h3>Proximate to Premier Retail &amp; Lifestyle Amenities</h3>
+        <p>A 10-minute drive from the 1.4-million-square-foot St. Johns Town Center — Jacksonville's premier open-air retail destination with 175+ shops and restaurants — and within 20 minutes of 22 miles of white-sand beaches and 80,000+ acres of parks.</p>
+      </div>
+      <div class="h-card">
+        <h3>Leading Healthcare &amp; Educational Institutions</h3>
+        <p>Surrounded by Mayo Clinic Jacksonville (~9 mi), HCA Florida Memorial Hospital (~4 mi), and Ascension St. Vincent's Southside Hospital (~3 mi), plus Jacksonville University and the University of North Florida, serving 25,000+ students.</p>
+      </div>
+      <div class="h-card">
+        <h3>Rapid Population Growth Fueling Market Momentum</h3>
+        <p>Metro population surpassing 1.7 million — nearly 10% growth since 2020 — making Jacksonville Florida's largest city by both land area and population.</p>
+      </div>
+      <div class="h-card">
+        <h3>Top-Ranked Job Market Driving Economic Growth</h3>
+        <p>Ranked the No. 2 hottest job market in the U.S. by The Wall Street Journal; led the nation in corporate relocation from 2022–2023 with 67% net growth. Home to FIS, CSX, and Southeastern Grocers headquarters.</p>
+      </div>
+      <div class="h-card">
+        <h3>Clean Investment Opportunity</h3>
+        <p>The non-union, fee-simple interest is offered free and clear of existing management and financing, affording new ownership maximum optionality in operation and capitalization.</p>
+      </div>
+      <div class="h-card">
+        <h3>Strong Brand Affiliation with Marriott Bonvoy</h3>
+        <p>A top-performing all-suite brand within the Marriott Bonvoy system — nearly 271 million members worldwide — with access to Marriott's centralized reservation, marketing, and rewards infrastructure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="section location-section" id="location">
+  <div class="wrap">
+    <div class="two-col">
+      <div>
+        <h2 class="h2" style="margin-top:0">At the heart of the<br>Deerwood Park corridor</h2>
+        <p class="lead" style="margin-top:22px">Anchored by the Deerwood Business District and the Baymeadows/Butler Boulevard corridor, the submarket offers direct highway access and sits alongside major corporate and financial employers, premier retail, healthcare systems, and the region's top leisure attractions.</p>
+        <div style="margin-top:28px">
+          <div class="callout"><span class="dot"></span><p>~1–5 miles from ADP, Merrill Lynch, Blue Cross Blue Shield, Bank of America &amp; Johnson &amp; Johnson</p></div>
+          <div class="callout"><span class="dot"></span><p>10-minute drive to the 1.4M SF St. Johns Town Center</p></div>
+          <div class="callout"><span class="dot"></span><p>20-minute drive to 22 miles of white-sand beaches</p></div>
+          <div class="callout"><span class="dot"></span><p>~3–9 miles from Mayo Clinic, HCA Florida Memorial &amp; Ascension St. Vincent's Southside</p></div>
+          <div class="callout"><span class="dot"></span><p>Direct access to I-95, JTB (Highway 202), and I-295</p></div>
+        </div>
+      </div>
+      <div class="loc-photos">
+        <div class="loc-photo">
+          <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?q=80&w=800&auto=format&fit=crop" alt="Downtown Jacksonville">
+          <div class="cap">Downtown Jacksonville — placeholder</div>
+        </div>
+        <div class="loc-photo">
+          <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=800&auto=format&fit=crop" alt="Jacksonville Beach">
+          <div class="cap">Jacksonville Beaches — placeholder</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMAND MAP -->
+<section class="section demand-section" id="demand">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:18px">Surrounding Market</div>
+    <h2 class="h2">Demand Generators</h2>
+    <div class="map-shell">
+      <div id="demand-map"></div>
+      <div class="dg-table">
+        <table>
+          <thead><tr><th>Demand Generator</th><th>Note</th></tr></thead>
+          <tbody id="dg-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND -->
+<section class="section brand-section" id="brand">
+  <div class="brand-inner wrap">
+    <div class="eyebrow" style="color:rgba(255,255,255,.65);margin-bottom:18px">Brand Strength</div>
+    <h2 class="h2" style="color:#fff">The Power of Marriott</h2>
+    <p class="lead" style="color:rgba(255,255,255,.65);max-width:70ch;margin-top:16px">SpringHill Suites benefits from its affiliation with Marriott International, a top-performing all-suite brand within the Marriott Bonvoy system and access to the world's largest hotel loyalty program.</p>
+    <div class="stats-grid">
+      <div class="bstat"><div class="val">9,000+</div><div class="lbl">Properties Worldwide</div></div>
+      <div class="bstat"><div class="val">30+</div><div class="lbl">Brands Globally</div></div>
+      <div class="bstat"><div class="val">271M+</div><div class="lbl">Marriott Bonvoy Members</div></div>
+      <div class="bstat"><div class="val">500+</div><div class="lbl">SpringHill Suites Hotels</div></div>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar"><h3>Marriott Bonvoy Loyalty</h3><p>Nearly 271M active Bonvoy members drive direct bookings and repeat stays through one of the world's largest travel loyalty programs, reducing OTA dependency.</p></div>
+      <div class="pillar"><h3>All-Suite Positioning</h3><p>SpringHill Suites has grown to more than 500 all-suite hotels across the U.S. and Canada, commanding rate premiums appropriate to the extended-stay segment.</p></div>
+      <div class="pillar"><h3>Global Distribution</h3><p>Marriott's proprietary booking platform and extensive GDS partnerships deliver unmatched channel reach across corporate, group, and leisure segments.</p></div>
+      <div class="pillar"><h3>Operational Excellence</h3><p>Ownership benefits from Marriott's centralized procurement, revenue management, training infrastructure, and brand-standard enforcement.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section" id="confidentiality">
+  <div class="wrap">
+    <h2 class="h2">Access the<br><span class="em" style="color:var(--off-white);opacity:.75">Offering Memorandum</span></h2>
+    <p>To receive the full Offering Memorandum and access data room materials, please execute the Confidentiality Agreement below.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn btn-cta">Sign CA Online</a>
+      <a href="#" class="btn btn-blue">Download CA (DOCX)</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="section" style="padding-top:64px;padding-bottom:36px">
+  <div class="wrap footer-inner">
+    <div class="hwe-wordmark">HODGES<br>WARD<br>ELLIOTT</div>
+    <div class="footer-col">
+      <h4>Exclusive Representatives</h4>
+      <div class="contacts-grid">
+        <div>
+          <div class="contact-name">Preston Reid</div>
+          <div class="contact-title">Executive Managing Director</div>
+        </div>
+        <div>
+          <div class="contact-name">Kyle Sahlsten</div>
+          <div class="contact-title">Senior Director</div>
+        </div>
+        <div>
+          <div class="contact-name">Celina Nowicki</div>
+          <div class="contact-title">Associate</div>
+        </div>
+      </div>
+      <h4>Acquisition Financing Advisor</h4>
+      <div class="contacts-grid" style="margin-bottom:0">
+        <div>
+          <div class="contact-name">Michael Britvan</div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Hodges Ward Elliott. All rights reserved. This offering is subject to errors, omissions, and withdrawal without notice.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  var HOTEL = { name: "SpringHill Suites Jacksonville", lat: 30.2265, lng: -81.5636 };
+  var GENERATORS = [
+    { name: "Deerwood Business District", lat: 30.2247, lng: -81.5678, note: "Adjacent corporate corridor" },
+    { name: "St. Johns Town Center", lat: 30.2453, lng: -81.5169, note: "1.4M SF retail — 10 min drive" },
+    { name: "Downtown Jacksonville / EverBank Stadium", lat: 30.3239, lng: -81.6373, note: "Jaguars, Riverwalk, dining" },
+    { name: "Mayo Clinic Jacksonville", lat: 30.2465, lng: -81.4468, note: "~9 miles" },
+    { name: "HCA Florida Memorial Hospital", lat: 30.1908, lng: -81.5773, note: "~4 miles" },
+    { name: "Ascension St. Vincent's Southside", lat: 30.2119, lng: -81.5793, note: "~3 miles" },
+    { name: "Jacksonville University", lat: 30.3616, lng: -81.6398, note: "25,000+ students combined" },
+    { name: "University of North Florida", lat: 30.2691, lng: -81.5064, note: "25,000+ students combined" }
+  ];
+
+  var tbody = document.getElementById("dg-tbody");
+  GENERATORS.forEach(function (g, i) {
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td><span class="dg-num">' + (i + 1) + '</span>' + g.name + '</td><td>' + g.note + '</td>';
+    tr.addEventListener("click", function () { flyTo(g); });
+    tbody.appendChild(tr);
+  });
+
+  var map, markers = {};
+  document.addEventListener("DOMContentLoaded", function () {
+    var el = document.getElementById("demand-map");
+    if (!el || typeof L === "undefined") return;
+    map = L.map(el, { scrollWheelZoom: false }).setView([HOTEL.lat, HOTEL.lng], 11);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      maxZoom: 19, attribution: "&copy; OpenStreetMap &copy; CARTO"
+    }).addTo(map);
+
+    var hotelIcon = L.divIcon({
+      html: '<div style="width:28px;height:28px;border-radius:50%;background:#21438A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.4)">&#10022;</div>',
+      className: "", iconSize: [28, 28], iconAnchor: [14, 14]
+    });
+    L.marker([HOTEL.lat, HOTEL.lng], { icon: hotelIcon }).addTo(map).bindPopup(HOTEL.name);
+
+    GENERATORS.forEach(function (g, i) {
+      var icon = L.divIcon({
+        html: '<div style="width:26px;height:26px;border-radius:50%;background:#0d1620;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.35)">' + (i + 1) + '</div>',
+        className: "", iconSize: [26, 26], iconAnchor: [13, 13]
+      });
+      markers[g.name] = L.marker([g.lat, g.lng], { icon: icon }).addTo(map).bindPopup(g.name);
+    });
+  });
+
+  function flyTo(g) {
+    if (!map) return;
+    map.flyTo([g.lat, g.lng], 14);
+    if (markers[g.name]) markers[g.name].openPopup();
+  }
+</script>
+</body>
+</html>
