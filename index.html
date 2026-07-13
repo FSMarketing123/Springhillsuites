@@ -102,7 +102,8 @@
 
   /* Overview */
   .overview{background:var(--navy);padding-bottom:clamp(40px,6vh,80px)}
-  .two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start}
+  .two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:stretch}
+  .two-col > div:first-child{display:flex;flex-direction:column}
   .stats-card{background:var(--navy-lt);padding:8px;display:grid;grid-template-columns:1fr 1fr;}
   .stat-row{padding:12px 16px;border-bottom:1px solid var(--divider)}
   .stat-row:nth-child(odd){border-right:1px solid var(--divider)}
@@ -260,7 +261,7 @@
         <p class="lead">Hodges Ward Elliott ("HWE") is pleased to exclusively offer for sale the fee-simple interest in the 102-suite SpringHill Suites Jacksonville (the "Hotel" or "Property"). Jacksonville has remained a favorite year-round destination spot for travelers and business travelers alike, driven by its leisure amenities, cultural attractions, and continued corporate relocations.</p>
         <p class="lead" style="margin-top:20px">Ideally located in Jacksonville's Deerwood Park / Southside Boulevard corridor just off I-95, the Property is surrounded by leading corporate, healthcare, and retail demand generators. The Hotel offers convenient access to the 1.4-million-square-foot St. Johns Town Center and to Downtown Jacksonville, home to the NFL's Jacksonville Jaguars and EverBank Stadium, as well as the scenic Riverwalk, diverse dining options, and entertainment venues.</p>
         <p class="lead" style="margin-top:20px">Guests additionally benefit from proximity to Jacksonville's beaches and expansive park system, further enhancing the city's appeal as a top leisure market. Backed by <span class="em">Jacksonville's sustained population growth, a top-ranked job market, and billions in citywide development</span>, the all-suite, extended-stay Hotel is well positioned to capture both corporate and leisure demand within one of Florida's most resilient lodging submarkets.</p>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:36px">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:auto;padding-top:36px">
           <a href="#" class="btn btn-cta">Sign CA Online</a>
           <a href="#" class="btn btn-ghost">Download CA (DOCX)</a>
         </div>
