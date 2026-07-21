@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
@@ -42,6 +42,7 @@
   .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
   .lead{font-size:15.5px;color:#ffffff;line-height:1.8}
   .em{font-style:italic;color:#fff}
+  strong{font-weight:700;color:#fff}
 
   .btn{display:inline-block;padding:13px 26px;font-family:var(--font-poppins);font-size:11px;
        font-weight:600;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;
@@ -102,13 +103,16 @@
 
   /* Overview */
   .overview{background:var(--navy);padding-bottom:clamp(40px,6vh,80px)}
+  .overview .lead{line-height:1.6}
   .two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:stretch}
   .two-col > div:first-child{display:flex;flex-direction:column}
-  .stats-card{background:transparent;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .two-col > div:last-child{display:flex;flex-direction:column}
+  .stats-card{background:transparent;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;
+       flex:1;grid-auto-rows:minmax(0,auto);align-content:stretch}
   .stat-row{font-family:var(--font-poppins);background:var(--navy-lt);border:1px solid var(--divider);
        border-radius:8px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.25);transform:scale(1);
        transition:transform .22s ease, box-shadow .22s ease, background-color .22s ease, border-color .22s ease;
-       position:relative}
+       position:relative;display:flex;flex-direction:column;justify-content:center}
   .stat-row:hover{transform:scale(1.045);box-shadow:0 14px 32px rgba(0,0,0,.45);
        background:#243a58;border-color:var(--blue-lt);z-index:2}
   .stat-label{font-family:var(--font-poppins);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#F5F5F5;margin-bottom:4px}
@@ -262,13 +266,13 @@
 <section class="section overview" id="overview">
   <div class="wrap">
     <div class="eyebrow" style="margin-bottom:18px">The Offering</div>
-    <h2 class="h2" style="margin-bottom:32px">A premier extended-stay asset in<br><span class="em">Jacksonville's Deerwood Park corridor</span></h2>
+    <h2 class="h2" style="margin-bottom:20px">A premier extended-stay asset in<br><span class="em">Jacksonville's Deerwood Park corridor</span></h2>
     <div class="two-col">
       <div>
-        <p class="lead">Hodges Ward Elliott ("HWE") is pleased to exclusively offer for sale the fee-simple interest in the 102-suite SpringHill Suites Jacksonville (the "Hotel" or "Property"). Jacksonville has remained a favorite year-round destination spot for travelers and business travelers alike, driven by its leisure amenities, cultural attractions, and continued corporate relocations.</p>
-        <p class="lead" style="margin-top:20px">Ideally located in Jacksonville's Deerwood Park / Southside Boulevard corridor just off I-95, the Property is surrounded by leading corporate, healthcare, and retail demand generators. The Hotel offers convenient access to the 1.4-million-square-foot St. Johns Town Center and to Downtown Jacksonville, home to the NFL's Jacksonville Jaguars and EverBank Stadium, as well as the scenic Riverwalk, diverse dining options, and entertainment venues.</p>
-        <p class="lead" style="margin-top:20px">Guests additionally benefit from proximity to Jacksonville's beaches and expansive park system, further enhancing the city's appeal as a top leisure market. Backed by <span class="em">Jacksonville's sustained population growth, a top-ranked job market, and billions in citywide development</span>, the all-suite, extended-stay Hotel is well positioned to capture both corporate and leisure demand within one of Florida's most resilient lodging submarkets.</p>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:auto;padding-top:36px">
+        <p class="lead"><strong>Hodges Ward Elliott</strong> is pleased to exclusively offer for sale the fee-simple interest in the <strong>2000-vintage, 102-suite SpringHill Suites Jacksonville located at 4385 Southside Boulevard, Jacksonville, FL (the "Hotel" or "Property")</strong>. Jacksonville has remained a favorite year-round destination for travelers and business travelers alike, driven by its leisure amenities, cultural attractions, and continued corporate relocations.</p>
+        <p class="lead" style="margin-top:12px">Ideally located in Jacksonville's Deerwood Park / Southside Boulevard corridor just off I-95, the Property is surrounded by leading corporate, healthcare, and retail demand generators. The Hotel offers convenient access to the 1.4-million-square-foot St. Johns Town Center and to Downtown Jacksonville, home to the NFL's Jacksonville Jaguars and EverBank Stadium, as well as the scenic Riverwalk, diverse dining options, and entertainment venues.</p>
+        <p class="lead" style="margin-top:12px">Guests additionally benefit from proximity to Jacksonville's beaches and expansive park system, further enhancing the city's appeal as a top leisure market. Backed by <span class="em">Jacksonville's sustained population growth, a top-ranked job market, and billions in citywide development</span>, the all-suite, extended-stay Hotel is well positioned to capture both corporate and leisure demand within one of Florida's most resilient lodging submarkets. Finally, in 2021, ownership completed capital intensive and disruptive renovations to the bathrooms including tub to shower conversions and a complete reimagining of the exterior facade, allowing new ownership to focus on high ROI improvements to the guest-facing areas which will drive top-line growth. The Property is offered unencumbered by debt and management.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:auto;padding-top:22px">
           <a href="https://secure.rightsignature.com/templates/868d7464-1eaf-4656-84e0-f8a790a5ca51/template-signer-link/d3e81844b5454bc24ed86be9c0a24651" target="_blank" rel="noopener noreferrer" class="btn btn-cta">Sign CA Online</a>
           <a href="SpringHill%20Suites%20Jacksonville%20CA.docx" target="_blank" rel="noopener noreferrer" download="SpringHill Suites Jacksonville CA.docx" class="btn btn-ghost">Download CA (DOCX)</a>
         </div>
